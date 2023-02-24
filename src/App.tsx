@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
+import './App.css';
 
 interface Todo {
   id: number;
@@ -93,39 +94,91 @@ const App: React.FC = () => {
 
   return (
     <>
-      {isEditable ? (
+  {isEditable ? (
+    <div className="flex justify-between items-center mb-4">
+      <input
+        className="border-gray-300 border-2 rounded-md py-1 px-2 w-80"
+        type="text"
+        value={newTitle}
+        onChange={handleEditFormChange}
+      />
       <div>
-        <input type='text' value={newTitle} onChange={handleEditFormChange} />
-        <button onClick={handleEditTodo}>編集を保存</button>
-        <button onClick={handleEditCloseForm}>キャンセル</button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+          onClick={handleEditTodo}
+        >
+          編集を保存
+        </button>
+        <button
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded"
+          onClick={handleEditCloseForm}
+        >
+          キャンセル
+        </button>
       </div>
-      ) : (
+    </div>
+  ) : (
+    <div className="flex justify-between items-center mb-4">
+      <input
+        placeholder="タスクを入力してください"
+        className="border-gray-300 border-2 rounded-md py-1 px-2 w-80"
+        type="text"
+        value={todoTitle}
+        onChange={handleAddFormChange}
+      />
       <div>
-        <input type='text' value={todoTitle} onChange={handleAddFormChange} />
-        <button onClick={handleAddTodo}>作成</button>
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+          onClick={handleAddTodo}
+        >
+          作成
+        </button>
+        <select
+          className="border-gray-300 border-2 rounded-md py-1 px-2"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
           <option value="all">すべて</option>
           <option value="notStarted">未着手</option>
           <option value="inProgress">作業中</option>
           <option value="done">完了</option>
         </select>
-      </div>)}
-      <ul>
-        {filteredTodos.map((todo) => (
-          <li key={todo.id}>
-            <span>{todo.title}</span>
-            <select value={todo.status} onChange={(e) => handleStatusChange(todo, e)}>
-              <option value='notStarted'>未着手</option>
-              <option value='inProgress'>作業中</option>
-              <option value='done'>完了</option>
-            </select>
-            <button onClick={() => handleEditOpenForm(todo)}>編集</button>
-            <button onClick={() => handleDeleteTodo(todo)}>削除</button>
-          </li>
-        ))}
-      </ul>
-    </>
+      </div>
+    </div>
+  )}
+  <ul>
+    {filteredTodos.map((todo) => (
+      <li key={todo.id} className="flex justify-between items-center mb-4">
+        <span>{todo.title}</span>
+        <select
+          className="border-gray-300 border-2 rounded-md py-1 px-2"
+          value={todo.status}
+          onChange={(e) => handleStatusChange(todo, e)}
+        >
+          <option value="notStarted">未着手</option>
+          <option value="inProgress">作業中</option>
+          <option value="done">完了</option>
+        </select>
+        <div>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+            onClick={() => handleEditOpenForm(todo)}
+          >
+            編集
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+            onClick={() => handleDeleteTodo(todo)}
+          >
+            削除
+          </button>
+        </div>
+      </li>
+    ))}
+  </ul>
+</>
+
   )
 }
 export default App;
-//ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+
