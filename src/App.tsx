@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import './App.css';
+import { db } from './firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface Todo {
   id: number;
