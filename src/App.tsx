@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import './App.css';
 import { db } from './firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 
 interface Todo {
   id: number;
@@ -20,9 +20,7 @@ const App: React.FC = () => {
   const [filter, setFilter] = useState<string>('notStarted');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
-  const handleAddFormChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleAddFormChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTodoTitle(e.target.value);
   };
 
@@ -34,6 +32,12 @@ const App: React.FC = () => {
     setTodos([...todos, { id: todoId, title: todoTitle, status: 'notStarted'}]);
     setTodoId(todoId + 1);
     resetFormInput();
+    console.log(todos);
+    addDoc(collection(db, "todos"),{
+      id: todoId,
+      title: todoTitle,
+      status: 'notStarted',
+    })
   };
 
   const handleDeleteTodo = (targetTodo: Todo): void => {
